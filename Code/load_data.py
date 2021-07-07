@@ -68,7 +68,7 @@ def load(groups, d_file):
             y1.append([int(r[1])])
             m = months[index+1]
             sum_m = sum(m)
-            y2.append([i/sum_m for i in m])
+            y2.append([i/sum_m * 100 for i in m])
     if d_file is not None:
         with open(d_file, 'wb') as f:
             pickle.dump([data, y1, y2], f)
