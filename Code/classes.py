@@ -55,11 +55,10 @@ class NN(nn.Module):
                     x[j][i] *= s
         return x
         
-    def learn(self, train, validation,*, intervals=250, epochs=500000, file=None, minimum=20000, ylim=None):
+    def learn(self, train, validation,*, intervals=10, epochs=5000, file=None, minimum=20000, ylim=None):
         epochs = tqdm_notebook(range(1, epochs+1))
         min_val_loss = float('inf')
         train_losses, val_losses = [], []
-        count = 0
         for epoch in epochs:
             self.zero_grad()
 
@@ -74,11 +73,7 @@ class NN(nn.Module):
                 if epoch >= minimum:
                     min_val_loss = min(min_val_loss, val_loss)
                     if val_loss > min_val_loss * 1.07:
-                        count += 1
-                        if count == 5:
-                            break
-                    else:
-                        count = 0
+                        break
             loss.backward()
             self.optimizer.step()
         x = [i * intervals for i in range(len(train_losses))]
