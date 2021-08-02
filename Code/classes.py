@@ -56,7 +56,7 @@ class NN(nn.Module):
         return x
         
     def learn(self, train, validation,*, intervals=10, epochs=5000, file=None, minimum=20000, ylim=None):
-        epochs = tqdm_notebook(range(1, epochs+1))
+        epochs = range(1, epochs+1)
         min_val_loss = float('inf')
         train_losses, val_losses = [], []
         for epoch in epochs:
@@ -67,7 +67,6 @@ class NN(nn.Module):
             if epoch % intervals == 0:
                 train_losses.append(float(loss))
                 val_predictions = self(validation[0])
-                
                 val_loss = self.loss_f(val_predictions, validation[1])
                 val_losses.append(float(val_loss))
                 if epoch >= minimum:
