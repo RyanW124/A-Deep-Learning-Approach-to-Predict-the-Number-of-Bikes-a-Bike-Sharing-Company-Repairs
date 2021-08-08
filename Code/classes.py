@@ -18,12 +18,7 @@ class MultiOutputLinear:
             out.append(i.predict(x))
         out = np.array(out)
         out = out.transpose()
-        for j in range(len(out)):
-            for i in range(len(out[j])):
-                out[j][i] = max(0, out[j][i])
-            s = 100/sum(out[j])
-            for i in range(len(out[j])):
-                out[j][i] *= s
+        out = [nn.Softmax()(i) for i in out]
         return out
 
 class NN(nn.Module):
@@ -47,12 +42,7 @@ class NN(nn.Module):
             x = nn.ReLU()(x)
         x = self.layers[-1](x)
         if self.normalize:
-            for j in range(len(x)):
-                for i in range(len(x[j])):
-                    x[j][i] = max(0, x[j][i])
-                s = 100/sum(x[j])
-                for i in range(len(x[j])):
-                    x[j][i] *= s
+            x = nn.Softmax()(x)
         return x
         
     def learn(self, train, validation,*, intervals=10, epochs=5000, file=None, minimum=20000, ylim=None):

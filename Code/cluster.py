@@ -1,9 +1,15 @@
 import pickle
-from sklearn import cluster as c
+import numpy as np
+import math
+from sklearn.cluster import KMeans
 
+
+def latlong_to_distance(lat, long):
+    return lat, math.cos(math.radians(lat)) * long
 
 def cluster(station_file):
     with open(station_file, 'rb') as f:
         x, y = pickle.load(f)
-    groups = c.KMeans(n_clusters=10, random_state=0).fit_predict(y)
-    return x, y, groups
+    points = [latlong_to_distance(i[0], i[1]) for i in y]
+    groups = KMeans(n_clusters=10, random_state=0).fit_predict(points)
+    return x, y, groups, points
