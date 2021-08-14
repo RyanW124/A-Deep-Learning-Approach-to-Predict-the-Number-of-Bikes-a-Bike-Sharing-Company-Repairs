@@ -46,9 +46,8 @@ def load(groups, d_file):
                     continue
                 data_point[groups[int(trip[3])] + 2] += 1
                 duration += int(trip[0])
-                n_trips += 1
+                n_trips+=1
             data_point.append(duration/n_trips)
-            data_point.append(n_trips)
         date += relativedelta(months=1)
         data.append(data_point)
         months.append(data_point[2:12])
