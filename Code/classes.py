@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 import numpy as np, torch
 from os.path import isfile
 from IPython.display import Image
+from scipy import stats
 
 __loss = nn.MSELoss()
 load_pt = True
@@ -27,23 +28,28 @@ class MultiOutputLinear:
         out = F.softmax(from_numpy(out), dim=1)
         return out
 
-def loss_plot(model1, model2, data, file, title, labels, *, x1=0, x2=0, y=1):
+def confidence(target, prediction):
+    losses = [float(__loss(target[i], prediction[i])) for i in range(len(target))]
+    interval = stats.norm.interval(alpha=0.9, loc=np.mean(losses), scale=stats.sem(losses))
+    return (interval[1]-interval[0])/2
+def loss_plot(model1, model2, data, file, title, labels, error, *, x1=0, x2=0, y=1):
     losses = []
+    confidences = []
     for i in data:
         predicdion1 = model1.predict(i[x1])
         predicdion2 = model2.predict(i[x2])
         predicdion1 = from_numpy(predicdion1) if type(predicdion1) == np.ndarray else predicdion1
         predicdion2 = from_numpy(predicdion2) if type(predicdion2) == np.ndarray else predicdion2
         losses.append((float(__loss(predicdion1, i[y])), float(__loss(predicdion2, i[y]))))
+        confidences.append((confidence(predicdion1, i[y]), confidence(predicdion2, i[y])))
     index = np.arange(2)
-    for i, c, l in [(0, 'r', 'Train'), (1, 'g', 'Validation'), (2, 'b', 'Test')]:
-        plt.bar(index+i*0.3, losses[i], 0.3, alpha=0.8, color=c, label=l)
-    plt.xticks(index + 0.3, labels)
-    plt.legend()
+    plt.bar(index, losses[2], 0.6, alpha=0.8, color='b')
+    plt.errorbar(index, losses[2], yerr=confidences[2], fmt='o', color='black')
+    plt.xticks(index, labels)
     plt.tight_layout()
     plt.title(title)
     plt.ylabel('Loss')
-    plt.savefig(file)
+    plt.savefig(file, bbox_inches='tight')
     plt.show()
 
 class NN(nn.Module):
@@ -107,7 +113,7 @@ class NN(nn.Module):
         plt.ylabel("Loss")
         plt.xlabel("Epochs")
         if file is not None:
-            plt.savefig(file)
+            plt.savefig(file, bbox_inches='tight')
             plt.show()
 
     @classmethod
