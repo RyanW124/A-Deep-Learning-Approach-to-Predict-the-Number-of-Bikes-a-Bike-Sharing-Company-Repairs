@@ -30,8 +30,8 @@ class MultiOutputLinear:
 
 def confidence(target, prediction):
     losses = [float(__loss(target[i], prediction[i])) for i in range(len(target))]
-    interval = stats.norm.interval(alpha=0.9, loc=np.mean(losses), scale=stats.sem(losses))
-    return (interval[1]-interval[0])/4
+    interval = stats.t.interval(0.9, len(losses) - 1, loc=np.mean(losses), scale=stats.sem(losses))
+    return (interval[1]-interval[0])/2
 def loss_plot(model1, model2, data, file, title, labels):
     predicdion1 = model1.predict(data[0])
     predicdion2 = model2.predict(data[0])
