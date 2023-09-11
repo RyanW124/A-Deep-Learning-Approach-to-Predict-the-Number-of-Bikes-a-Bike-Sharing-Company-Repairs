@@ -32,3 +32,22 @@ Changing the clustering would require much more work.
 4. Make sure the files appear in the same order as https://s3.amazonaws.com/tripdata/index.html
 5. Delete Data/data.dat and Data/stations.dat
 6. Rerun all cells in Code/main.ipynb
+
+![pdf](pngs/Yau_Report-01.png)
+![pdf](pngs/Yau_Report-02.png)
+![pdf](pngs/Yau_Report-03.png)
+![pdf](pngs/Yau_Report-04.png)
+![pdf](pngs/Yau_Report-05.png)
+![pdf](pngs/Yau_Report-06.png)
+![pdf](pngs/Yau_Report-07.png)
+![pdf](pngs/Yau_Report-08.png)
+![pdf](pngs/Yau_Report-09.png)
+![pdf](pngs/Yau_Report-10.png)
+![pdf](pngs/Yau_Report-11.png)
+![pdf](pngs/Yau_Report-12.png)
+![pdf](pngs/Yau_Report-13.png)
+![pdf](pngs/Yau_Report-14.png)
+![pdf](pngs/Yau_Report-15.png)
+![pdf](pngs/Yau_Report-16.png)
+![pdf](pngs/Yau_Report-17.png)
+![pdf](pngs/Yau_Report-18.png)
